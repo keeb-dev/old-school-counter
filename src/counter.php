@@ -4,11 +4,15 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 $file = "../counter.txt";
+$_ENV["COUNTER_LOGS_DEV"] = false;
 
 function logit($logstr) {
     // i don't want to do proper logging, this just hijacks local stdout
-    define('STDOUT', fopen('php://stdout', 'w'));
-    fwrite(STDOUT, print_r($logstr . "\n", true));
+    // only during dev tho
+    if($_ENV["COUNTER_LOGS_DEV"] == true) {
+        define('STDOUT', fopen('php://stdout', 'w'));
+        fwrite(STDOUT, print_r($logstr . "\n", true));
+    }
 }
 
 function make_counter($count_int) {
